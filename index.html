@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Laporan Progres Lapangan</title>
+    <style>
+        * { box-sizing: border-box; font-family: Arial, sans-serif; }
+        body { background-color: #f4f6f9; margin: 0; padding: 15px; }
+        .container { max-width: 1000px; margin: 0 auto; display: flex; flex-wrap: wrap; gap: 20px; }
+        .card { background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); flex: 1; min-width: 320px; }
+        h2 { margin-top: 0; font-size: 16px; text-align: center; background: #007bff; color: white; padding: 10px; border-radius: 4px; }
+        .form-group { margin-bottom: 12px; }
+        label { display: block; font-weight: bold; font-size: 13px; margin-bottom: 4px; }
+        input, select, textarea { width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; font-size: 14px; }
+        .row { display: flex; gap: 10px; }
+        .row > div { flex: 1; }
+        .btn-group { display: flex; gap: 10px; margin-top: 15px; }
+        button { flex: 1; padding: 10px; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; }
+        .btn-copy { background-color: #28a745; color: white; }
+        .btn-clear { background-color: #dc3545; color: white; }
+        #previewText { width: 100%; height: 530px; font-family: monospace; white-space: pre-wrap; background: #eef2f7; padding: 12px; border: 1px solid #000; border-radius: 4px; font-size: 13px; }
+        .hidden { display: none; }
+        .pic-checkboxes { display: flex; flex-wrap: wrap; gap: 10px; background: #f8f9fa; padding: 8px; border: 1px solid #ccc; border-radius: 4px; }
+        .pic-checkboxes label { font-weight: normal; margin: 0; cursor: pointer; }
+        .section-header { font-weight: bold; background: #e9ecef; padding: 6px; margin: 10px 0; border-left: 4px solid #007bff; }
+        .hint { font-size: 11px; color: #6c757d; margin-top: 2px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- FORM INPUT -->
+    <div class="card">
+        <h2>FORM INPUT LAPORAN</h2>
+        <form id="reportForm">
+            <!-- INFORMASI UMUM -->
+            <div class="section-header">Informasi Umum</div>
+            <div class="form-group">
+                <label>Jenis Laporan</label>
+                <select id="jenisLaporan">
+                    <option value="INSTALASI">Laporan Instalasi</option>
+                    <option value="MAINTENANCE">Laporan Maintenance</option>
+                </select>
+            </div>
+
+            <div class="row">
+                <div class="form-group">
+                    <label>Tanggal</label>
+                    <input type="date" id="tanggal" required>
+                </div>
+                <div class="form-group">
+                    <label>Project / ISP</label>
+                    <select id="project">
+                        <option value="FTTH ISP JAKINET">FTTH ISP JAKINET</option>
+                        <option value="FTTH ISP JELANTIK">FTTH ISP JELANTIK</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- PIC ON SITE & LEADER -->
+            <div class="row">
+                <div class="form-group">
+                    <label>PIC On Site</label>
+                    <div class="pic-checkboxes">
+                        <label><input type="checkbox" class="pic-check" value="Yohan"> Yohan</label>
+                        <label><input type="checkbox" class="pic-check" value="Aryan"> Aryan</label>
+                        <label><input type="checkbox" class="pic-check" value="Tami"> Tami</label>
+                        <label><input type="checkbox" class="pic-check" value="Andri"> Andri</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Leader</label>
+                    <select id="leaderSelect">
+                        <option value="Yohan">Yohan</option>
+                        <option value="Aryan">Aryan</option>
+                        <option value="Tami">Tami</option>
+                        <option value="Andri">Andri</option>
+                        <option value="CUSTOM">Lainnya (Ketik Manual)</option>
+                    </select>
+                    <input type="text" id="leaderCustom" class="hidden" placeholder="Nama Leader" style="margin-top: 5px;">
+                </div>
+            </div>
+            <div class="form-group" style="margin-top: -5px;">
+                <input type="text" id="picCustom" placeholder="PIC Tambahan/Lainnya (Opsional)">
+            </div>
+
+            <!-- LOKASI SETUP -->
+            <div class="section-header">Lokasi Pekerjaan</div>
+            <div class="form-group">
+                <label>Kategori Lokasi</label>
+                <select id="katLokasi">
+                    <option value="RUSUN_BLOK">Rusun Blok (Lantai 1-5)</option>
+                    <option value="RUSUN_TOWER">Rusun Tower (Highrise)</option>
+                    <option value="PERUMAHAN">Perumahan</option>
+                    <option value="CUSTOM">Custom Alamat</option>
+                </select>
+            </div>
+
+            <!-- OPTIONS LOKASI: RUSUN BLOK -->
+            <div id="boxRusunBlok">
+                <div class="row">
+                    <div class="form-group">
+                        <label>Nama Rusun</label>
+                        <select id="rusunBlokNama">
+                            <option value="Rusun Pinus">Rusun Pinus</option>
+                            <option value="Rusun Pulogebang Blok">Rusun Pulogebang Blok</option>
+                            <option value="Rusun KM2">Rusun KM2</option>
+                            <option value="Rusun Tipar Cakung">Rusun Tipar Cakung</option>
+                            <option value="Rusun Cakung Barat">Rusun Cakung Barat</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Blok</label>
+                        <input type="text" id="rusunBlokKode" placeholder="Contoh: A1 / A">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <label>Lantai (1-5)</label>
+                        <input type="number" id="rusunBlokLantai" min="1" max="5" placeholder="Contoh: 3">
+                    </div>
+                    <div class="form-group">
+                        <label>No. Unit (2 Digit)</label>
+                        <input type="number" id="rusunBlokUnit" placeholder="Contoh: 10">
+                        <div class="hint">Otomatis gabung (Lt 3 & Unit 10 -> UNIT 310)</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- OPTIONS LOKASI: RUSUN TOWER -->
+            <div id="boxRusunTower" class="hidden">
+                <div class="row">
+                    <div class="form-group">
+                        <label>Nama Rusun Tower</label>
+                        <select id="rusunTowerNama">
+                            <option value="Rusun Pulogebang Tower">Rusun Pulogebang Tower</option>
+                            <option value="Rusun Nagrak">Rusun Nagrak</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Tower</label>
+                        <input type="text" id="rusunTowerKode" placeholder="Contoh: 1 / A">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <label>Lantai (1-16)</label>
+                        <input type="number" id="rusunTowerLantai" min="1" max="16" placeholder="Contoh: 13">
+                    </div>
+                    <div class="form-group">
+                        <label>No. Unit (2 Digit)</label>
+                        <input type="number" id="rusunTowerUnit" placeholder="Contoh: 17">
+                        <div class="hint">Otomatis gabung (Lt 13 & Unit 17 -> UNIT 1317)</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- OPTIONS LOKASI: PERUMAHAN -->
+            <div id="boxPerumahan" class="hidden">
+                <div class="row">
+                    <div class="form-group">
+                        <label>Nama Perumahan</label>
+                        <select id="perumahanNama">
+                            <option value="Waringin Kurung">Waringin Kurung</option>
+                            <option value="Parama">Parama</option>
+                            <option value="Casanova">Casanova</option>
+                            <option value="Tambun">Tambun</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Blok / No. Rumah</label>
+                        <input type="text" id="perumahanDetail" placeholder="Contoh: Blok B No. 12">
+                    </div>
+                </div>
+            </div>
+
+            <!-- OPTIONS LOKASI: CUSTOM -->
+            <div id="boxCustom" class="hidden">
+                <div class="form-group">
+                    <label>Alamat Custom Lengkap</label>
+                    <input type="text" id="alamatCustom" placeholder="Ketikkan alamat lengkap di sini">
+                </div>
+            </div>
+
+            <!-- WAKTU & STATUS -->
+            <div class="section-header">Waktu & Aktivitas</div>
+            <div class="row">
+                <div class="form-group">
+                    <label>Clock In</label>
+                    <input type="time" id="clockIn">
+                </div>
+                <div class="form-group">
+                    <label>Clock Out</label>
+                    <input type="time" id="clockOut">
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group">
+                    <label>Activity</label>
+                    <select id="activity">
+                        <option value="INSTALASI">INSTALASI</option>
+                        <option value="MAINTENANCE">MAINTENANCE</option>
+                        <option value="REAKTIVASI">REAKTIVASI</option>
+                        <option value="RELOKASI">RELOKASI</option>
+                        <option value="SURVEI">SURVEI</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Status</label>
+                    <select id="statusActivity">
+                        <option value="ONLINE">ONLINE</option>
+                        <option value="PROGRES">PROGRES</option>
+                        <option value="PENDING">PENDING</option>
+                        <option value="FAILED">FAILED</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- KHUSUS MAINTENANCE: JENIS PENANGANAN, PROBLEM & ACTION -->
+            <div id="boxJenisMaintenance" class="hidden">
+                <div class="form-group">
+                    <label>Jenis Perbaikan (Maintenance)</label>
+                    <select id="jenisKendala">
+                        <option value="KABEL_PUTUS">Perbaikan Kabel Putus / Splicing</option>
+                        <option value="TUKAR_MODEM">Ganti / Tukar Modem (ONT)</option>
+                        <option value="SETTING_OLT">Setting OLT / Redaman</option>
+                        <option value="LAINNYA">Lainnya / Full Check</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Problem (Kendala)</label>
+                    <input type="text" id="problemText" placeholder="Contoh: LOS Red (Kabel Dropcore Putus di Riser)">
+                </div>
+                <div class="form-group">
+                    <label>Action (Tindakan / Penanganan)</label>
+                    <input type="text" id="actionText" placeholder="Contoh: Splicing ulang kabel dropcore di lantai 3">
+                </div>
+            </div>
+
+            <!-- DATA TEKNIS PERANGKAT -->
+            <div class="section-header">Data Teknis & Perangkat</div>
+            <div class="form-group" id="groupRedaman">
+                <label>Redaman / Power (dBm)</label>
+                <input type="text" id="power" placeholder="Contoh: -21.5">
+            </div>
+
+            <div class="form-group" id="groupInterfaceOnu">
+                <label>Interface ONU (Opsional)</label>
+                <input type="text" id="interfaceOnu" placeholder="Format: 1/2//2:32">
+            </div>
+
+            <div class="form-group" id="groupOdpPort">
+                <label>ODP Port (Opsional)</label>
+                <input type="text" id="odpPort" placeholder="Contoh: ODP-NGR-TWR1-LT13">
+            </div>
+
+            <!-- SN ONT NORMAL -->
+            <div class="form-group" id="groupSnOnu">
+                <label>SN ONT / Modem</label>
+                <input type="text" id="snOnu" placeholder="Serial Number Modem">
+            </div>
+
+            <!-- SN ONT TUKAR MODEM (KHUSUS MAINTENANCE) -->
+            <div id="groupSnTukarModem" class="hidden">
+                <div class="form-group">
+                    <label style="color: #dc3545;">SN ONT LAMA</label>
+                    <input type="text" id="snOntLama" placeholder="SN Modem Lama yang diganti">
+                </div>
+                <div class="form-group">
+                    <label style="color: #28a745;">SN ONT BARU</label>
+                    <input type="text" id="snOntBaru" placeholder="SN Modem Baru yang dipasang">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Catatan / Keterangan Lain (Opsional)</label>
+                <input type="text" id="catatan" placeholder="Keterangan tambahan jika ada">
+            </div>
+        </form>
+    </div>
+
+    <!-- PREVIEW & SALIN -->
+    <div class="card">
+        <h2>PREVIEW LAPORAN WA</h2>
+        <textarea id="previewText" readonly></textarea>
+        <div class="btn-group">
+            <button class="btn-copy" onclick="copyText()">📋 Salin Teks Laporan</button>
+            <button class="btn-clear" onclick="resetForm()">🔄 Clear / Reset</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    function setTanggalHariIni() {
+        const today = new Date();
+        const year = today.getFullYear();
+        const month = String(today.getMonth() + 1).padStart(2, '0');
+        const day = String(today.getDate()).padStart(2, '0');
+        document.getElementById('tanggal').value = `${year}-${month}-${day}`;
+    }
+
+    setTanggalHariIni();
+
+    const allInputs = document.querySelectorAll('input, select');
+    allInputs.forEach(item => item.addEventListener('input', updateViewAndPreview));
+
+    function updateViewAndPreview() {
+        // Toggle Leader Custom
+        const leaderSelect = document.getElementById('leaderSelect').value;
+        document.getElementById('leaderCustom').classList.toggle('hidden', leaderSelect !== 'CUSTOM');
+
+        // Toggle Tipe Lokasi
+        const katLok = document.getElementById('katLokasi').value;
+        document.getElementById('boxRusunBlok').classList.toggle('hidden', katLok !== 'RUSUN_BLOK');
+        document.getElementById('boxRusunTower').classList.toggle('hidden', katLok !== 'RUSUN_TOWER');
+        document.getElementById('boxPerumahan').classList.toggle('hidden', katLok !== 'PERUMAHAN');
+        document.getElementById('boxCustom').classList.toggle('hidden', katLok !== 'CUSTOM');
+
+        // Toggle Jenis Laporan & Activity Lock
+        const jenisLap = document.getElementById('jenisLaporan').value;
+        const boxMtn = document.getElementById('boxJenisMaintenance');
+        const activitySelect = document.getElementById('activity');
+
+        if (jenisLap === 'MAINTENANCE') {
+            boxMtn.classList.remove('hidden');
+            activitySelect.value = 'MAINTENANCE';
+            activitySelect.disabled = true;
+        } else {
+            boxMtn.classList.add('hidden');
+            activitySelect.disabled = false;
+        }
+
+        const jenisKendala = document.getElementById('jenisKendala').value;
+        const isTukarModem = (jenisLap === 'MAINTENANCE' && jenisKendala === 'TUKAR_MODEM');
+        const isKabelPutus = (jenisLap === 'MAINTENANCE' && jenisKendala === 'KABEL_PUTUS');
+
+        if (isTukarModem) {
+            document.getElementById('groupSnOnu').classList.add('hidden');
+            document.getElementById('groupSnTukarModem').classList.remove('hidden');
+            document.getElementById('groupOdpPort').classList.add('hidden');
+        } else if (isKabelPutus) {
+            document.getElementById('groupSnOnu').classList.add('hidden');
+            document.getElementById('groupSnTukarModem').classList.add('hidden');
+            document.getElementById('groupOdpPort').classList.add('hidden');
+            document.getElementById('groupInterfaceOnu').classList.add('hidden');
+        } else {
+            document.getElementById('groupSnOnu').classList.remove('hidden');
+            document.getElementById('groupSnTukarModem').classList.add('hidden');
+            document.getElementById('groupOdpPort').classList.remove('hidden');
+            document.getElementById('groupInterfaceOnu').classList.remove('hidden');
+        }
+
+        generatePreview();
+    }
+
+    function formatHariTanggal(dateString) {
+        if (!dateString) return '';
+        const parts = dateString.split('-');
+        if(parts.length !== 3) return '';
+        
+        const date = new Date(parts[0], parts[1] - 1, parts[2]);
+        const options = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
+        return date.toLocaleDateString('id-ID', options).toUpperCase();
+    }
+
+    function getSelectedLeader() {
+        const sel = document.getElementById('leaderSelect').value;
+        if (sel === 'CUSTOM') {
+            return document.getElementById('leaderCustom').value.trim() || '-';
+        }
+        return sel;
+    }
+
+    function getSelectedPIC() {
+        let picArr = [];
+        document.querySelectorAll('.pic-check:checked').forEach(cb => picArr.push(cb.value));
+        
+        const customPic = document.getElementById('picCustom').value.trim();
+        if (customPic) picArr.push(customPic);
+        
+        return picArr.length > 0 ? picArr.join('-') : '-';
+    }
+
+    function formatUnitNumber(unitStr) {
+        if (!unitStr) return '';
+        let num = parseInt(unitStr, 10);
+        if (isNaN(num)) return unitStr;
+        return num < 10 ? '0' + num : num.toString();
+    }
+
+    function getFormattedLokasi() {
+        const kat = document.getElementById('katLokasi').value;
+        if (kat === 'RUSUN_BLOK') {
+            const nama = document.getElementById('rusunBlokNama').value;
+            const kode = document.getElementById('rusunBlokKode').value;
+            const lt = document.getElementById('rusunBlokLantai').value || '';
+            const unitRaw = document.getElementById('rusunBlokUnit').value;
+            const unitFormatted = formatUnitNumber(unitRaw);
+            
+            const combinedUnit = (lt || unitFormatted) ? `UNIT ${lt}${unitFormatted}` : '';
+            return `${nama.toUpperCase()} BLOK ${kode.toUpperCase()} ${combinedUnit}`.trim();
+
+        } else if (kat === 'RUSUN_TOWER') {
+            const nama = document.getElementById('rusunTowerNama').value;
+            const kode = document.getElementById('rusunTowerKode').value;
+            const lt = document.getElementById('rusunTowerLantai').value || '';
+            const unitRaw = document.getElementById('rusunTowerUnit').value;
+            const unitFormatted = formatUnitNumber(unitRaw);
+            
+            const combinedUnit = (lt || unitFormatted) ? `UNIT ${lt}${unitFormatted}` : '';
+            return `${nama.toUpperCase()} TOWER ${kode.toUpperCase()} ${combinedUnit}`.trim();
+
+        } else if (kat === 'PERUMAHAN') {
+            const nama = document.getElementById('perumahanNama').value;
+            const detail = document.getElementById('perumahanDetail').value;
+            return `PERUMAHAN ${nama.toUpperCase()} ${detail.toUpperCase()}`;
+        } else {
+            return document.getElementById('alamatCustom').value.toUpperCase();
+        }
+    }
+
+    function generatePreview() {
+        const jenisLap = document.getElementById('jenisLaporan').value;
+        const tglVal = document.getElementById('tanggal').value;
+        const hariTgl = formatHariTanggal(tglVal);
+        const project = document.getElementById('project').value;
+        const lokasi = getFormattedLokasi();
+        const clockIn = document.getElementById('clockIn').value || '-';
+        const clockOut = document.getElementById('clockOut').value || '-';
+        const activity = document.getElementById('activity').value;
+        const status = document.getElementById('statusActivity').value;
+        const pic = getSelectedPIC();
+        const leader = getSelectedLeader();
+
+        const problem = document.getElementById('problemText').value;
+        const action = document.getElementById('actionText').value;
+
+        const power = document.getElementById('power').value;
+        const onu = document.getElementById('interfaceOnu').value;
+        const odp = document.getElementById('odpPort').value;
+        const snNormal = document.getElementById('snOnu').value;
+        const snLama = document.getElementById('snOntLama').value;
+        const snBaru = document.getElementById('snOntBaru').value;
+        const catatan = document.getElementById('catatan').value;
+
+        const jenisKendala = document.getElementById('jenisKendala').value;
+        const isTukarModem = (jenisLap === 'MAINTENANCE' && jenisKendala === 'TUKAR_MODEM');
+        const isKabelPutus = (jenisLap === 'MAINTENANCE' && jenisKendala === 'KABEL_PUTUS');
+
+        let textOut = `*Check in* & *Check Out*\n`;
+        textOut += `==================\n`;
+        textOut += `*Daily Progress* : *${hariTgl}*\n`;
+        textOut += `*Jenis Laporan*  : LAPORAN ${jenisLap}\n`;
+        textOut += `*Project*        : ${project}\n`;
+        textOut += `*Pic On Site*    : ${pic}\n`;
+        textOut += `*Leader*         : ${leader}\n`;
+        textOut += `*LOKASI*         : ${lokasi}\n`;
+        textOut += `*Clock In*       : ${clockIn}\n`;
+        textOut += `*Clock Out*      : ${clockOut}\n`;
+        textOut += `*Activity*       : ${activity}\n`;
+        textOut += `*Status Activity*: ${status}\n`;
+
+        if (jenisLap === 'MAINTENANCE') {
+            if (problem) textOut += `*Problem*        : ${problem}\n`;
+            if (action)  textOut += `*Action*         : ${action}\n`;
+        }
+
+        textOut += `\n*DATA TEKNIS*\n`;
+        if (power) textOut += `POWER          : ${power} dBm\n`;
+        if (!isKabelPutus && onu) textOut += `INTERFACE ONU  : ${onu}\n`;
+        if (!isTukarModem && !isKabelPutus && odp) textOut += `ODP PORT       : ${odp}\n`;
+
+        if (isTukarModem) {
+            textOut += `SN ONT LAMA    : ${snLama || '-'}\n`;
+            textOut += `SN ONT BARU    : ${snBaru || '-'}\n`;
+        } else if (!isKabelPutus) {
+            if (snNormal) textOut += `SN             : ${snNormal}\n`;
+        }
+
+        if (catatan) textOut += `\n*CATATAN*        : ${catatan}\n`;
+
+        textOut += `\n*TERIMAKASIH*`;
+
+        document.getElementById('previewText').value = textOut;
+    }
+
+    function copyText() {
+        const copyText = document.getElementById("previewText");
+        copyText.select();
+        copyText.setSelectionRange(0, 99999);
+        navigator.clipboard.writeText(copyText.value);
+        alert("Format Laporan berhasil disalin!");
+    }
+
+    function resetForm() {
+        document.getElementById("reportForm").reset();
+        setTanggalHariIni();
+        updateViewAndPreview();
+    }
+
+    updateViewAndPreview();
+</script>
+
+</body>
+</html>
