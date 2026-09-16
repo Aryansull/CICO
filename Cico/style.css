@@ -1,0 +1,128 @@
+* { 
+    box-sizing: border-box; 
+    font-family: Arial, sans-serif; 
+}
+body { 
+    background-color: #f4f6f9; 
+    margin: 0; 
+    padding: 15px; 
+}
+.container { 
+    max-width: 1000px; 
+    margin: 0 auto; 
+    display: flex; 
+    flex-wrap: wrap; 
+    gap: 20px; 
+}
+.card { 
+    background: #fff; 
+    padding: 20px; 
+    border-radius: 8px; 
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1); 
+    flex: 1; 
+    min-width: 320px; 
+}
+h2 { 
+    margin-top: 0; 
+    font-size: 16px; 
+    text-align: center; 
+    background: #007bff; 
+    color: white; 
+    padding: 10px; 
+    border-radius: 4px; 
+}
+.form-group { 
+    margin-bottom: 12px; 
+}
+label { 
+    display: block; 
+    font-weight: bold; 
+    font-size: 13px; 
+    margin-bottom: 4px; 
+}
+input, select, textarea { 
+    width: 100%; 
+    padding: 8px; 
+    border: 1px solid #ccc; 
+    border-radius: 4px; 
+    font-size: 14px; 
+}
+.row { 
+    display: flex; 
+    gap: 10px; 
+}
+.row > div { 
+    flex: 1; 
+}
+.btn-group { 
+    display: flex; 
+    gap: 10px; 
+    margin-top: 15px; 
+}
+button { 
+    flex: 1; 
+    padding: 12px; 
+    border: none; 
+    border-radius: 6px; 
+    font-family: Arial, sans-serif; 
+    font-size: 14px; 
+    font-weight: bold; 
+    letter-spacing: 0.5px; 
+    text-transform: uppercase; 
+    cursor: pointer; 
+    transition: background-color 0.2s ease;
+}
+.btn-clear { 
+    background-color: #dc3545; 
+    color: white; 
+}
+.btn-clear:hover { 
+    background-color: #c82333; 
+}
+.btn-copy { 
+    background-color: #28a745; 
+    color: white; 
+}
+.btn-copy:hover { 
+    background-color: #218838; 
+}
+#previewText { 
+    width: 100%; 
+    height: 580px; 
+    font-family: monospace; 
+    white-space: pre-wrap; 
+    background: #eef2f7; 
+    padding: 12px; 
+    border: 1px solid #000; 
+    border-radius: 4px; 
+    font-size: 13px; 
+}
+.hidden { 
+    display: none !important; 
+}
+.pic-checkboxes { 
+    display: flex; 
+    flex-wrap: wrap; 
+    gap: 10px; 
+    background: #f8f9fa; 
+    padding: 8px; 
+    border: 1px solid #ccc; 
+    border-radius: 4px; 
+}
+.pic-checkboxes label { 
+    font-weight: normal; 
+    margin: 0; 
+    cursor: pointer; 
+}
+.section-header { 
+    font-weight: bold; 
+    background: #e9ecef; 
+    padding: 6px; 
+    margin: 10px 0; 
+    border-left: 4px solid #007bff; 
+}
+.hint { 
+    font-size: 11px; 
+    color: #6c757d; 
+    margin-top: 2px; 
+}

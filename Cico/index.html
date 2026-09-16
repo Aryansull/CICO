@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Input Laporan</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .hidden { display: none !important; }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800 font-sans antialiased p-4 sm:p-6">
+
+    <div class="max-w-4xl mx-auto bg-white rounded-lg shadow-md p-6">
+        <h1 class="text-xl font-bold text-center mb-6 text-blue-600 border-b pb-2">FORM INPUT LAPORAN</h1>
+
+        <form id="reportForm" class="space-y-6">
+            
+            <!-- Informasi Umum -->
+            <div class="bg-gray-50 p-4 rounded-md border border-gray-200 space-y-4">
+                <h2 class="text-md font-semibold text-gray-700">Informasi Umum</h2>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Jenis Laporan & Kegiatan</label>
+                    <select id="jenisLaporan" class="w-full border border-gray-300 rounded-md p-2 text-sm focus:ring-blue-500 focus:border-blue-500">
+                        <option value="" disabled selected hidden>-- Pilih Jenis Laporan --</option>
+                        <option value="KEGIATAN INSTALASI">KEGIATAN INSTALASI</option>
+                        <option value="KEGIATAN MAINTENANCE">KEGIATAN MAINTENANCE</option>
+                        <option value="KEGIATAN SURVEY">KEGIATAN SURVEY</option>
+                        <option value="LAINNYA">LAINNYA (Custom)</option>
+                    </select>
+                </div>
+
+                <!-- Input Custom Jenis Laporan -->
+                <div id="jenisLaporanCustom" class="hidden">
+                    <input type="text" placeholder="Masukkan Jenis Kegiatan Lainnya..." class="w-full border border-gray-300 rounded-md p-2 text-sm uppercase">
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Tanggal</label>
+                        <input type="date" id="tanggal" class="w-full border border-gray-300 rounded-md p-2 text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Project / ISP</label>
+                        <select id="project" class="w-full border border-gray-300 rounded-md p-2 text-sm">
+                            <option value="" disabled selected hidden>-- Pilih Project --</option>
+                            <option value="FTTH ISP JAKINET">FTTH ISP JAKINET</option>
+                            <option value="FTTH ISP JELANTIK">FTTH ISP JELANTIK</option>
+                            <option value="CUSTOM">Lainnya (Custom)</option>
+                        </select>
+                        <input type="text" id="projectCustom" placeholder="Nama Project Custom..." class="w-full mt-2 border border-gray-300 rounded-md p-2 text-sm uppercase hidden">
+                    </div>
+                </div>
+
+                <!-- PIC On Site -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">PIC On Site</label>
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 border border-gray-300 rounded-md p-3 bg-white">
+                        <label class="flex items-center space-x-2 text-sm"><input type="checkbox" value="Yohan" class="pic-check rounded text-blue-600"> <span>Yohan</span></label>
+                        <label class="flex items-center space-x-2 text-sm"><input type="checkbox" value="Aryan" class="pic-check rounded text-blue-600"> <span>Aryan</span></label>
+                        <label class="flex items-center space-x-2 text-sm"><input type="checkbox" value="Tami" class="pic-check rounded text-blue-600"> <span>Tami</span></label>
+                        <label class="flex items-center space-x-2 text-sm"><input type="checkbox" value="Andri" class="pic-check rounded text-blue-600"> <span>Andri</span></label>
+                    </div>
+                    <input type="text" id="picCustom" placeholder="PIC Tambahan/Lainnya (Opsional)" class="w-full mt-2 border border-gray-300 rounded-md p-2 text-sm">
+                </div>
+
+                <!-- Leader -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Leader</label>
+                        <select id="leaderSelect" class="w-full border border-gray-300 rounded-md p-2 text-sm">
+                            <option value="Yohan">Yohan</option>
+                            <option value="Aryan">Aryan</option>
+                            <option value="Tami">Tami</option>
+                            <option value="Andri">Andri</option>
+                            <option value="CUSTOM">Lainnya (Custom)</option>
+                        </select>
+                        <input type="text" id="leaderCustom" placeholder="Nama Leader Custom..." class="w-full mt-2 border border-gray-300 rounded-md p-2 text-sm hidden">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Lokasi Pekerjaan -->
+            <div class="bg-gray-50 p-4 rounded-md border border-gray-200 space-y-4">
+                <h2 class="text-md font-semibold text-gray-700">Lokasi Pekerjaan</h2>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Kategori Lokasi</label>
+                    <select id="katLokasi" class="w-full border border-gray-300 rounded-md p-2 text-sm">
+                        <option value="" disabled selected hidden>-- Pilih ISP Terlebih Dahulu --</option>
+                    </select>
+                </div>
+
+                <!-- Pilihan Rusun Tower (Hanya muncul jika Kategori = RUSUN_TOWER) -->
+                <div id="groupRusunTowerNama" class="hidden">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Pilih Rusun Tower</label>
+                    <select id="rusunTowerNama" class="w-full border border-gray-300 rounded-md p-2 text-sm">
+                        <option value="" disabled selected hidden>-- Pilih Rusun Tower --</option>
+                    </select>
+                </div>
+
+                <!-- KOTAK 1: RUSUN BLOK -->
+                <div id="boxRusunBlok" class="space-y-4 hidden border-t pt-3">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Nama Rusun</label>
+                            <select id="rusunBlokNama" class="w-full border border-gray-300 rounded-md p-2 text-sm">
+                                <option value="" disabled selected hidden>-- Pilih Rusun --</option>
+                                <option value="Rusun Pinus">Rusun Pinus</option>
+                                <option value="Rusun Pulogebang Blok">Rusun Pulogebang Blok</option>
+                                <option value="Rusun KM2">Rusun KM2</option>
+                                <option value="Rusun Tipar Cakung">Rusun Tipar Cakung</option>
+                                <option value="Rusun Cakung Barat">Rusun Cakung Barat</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Blok</label>
+                            <select id="rusunBlokKodeSelect" class="w-full border border-gray-300 rounded-md p-2 text-sm">
+                                <option value="" disabled selected hidden>-- Pilih Blok --</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Lantai (1-5)</label>
+                            <select id="rusunBlokLantai" class="w-full border border-gray-300 rounded-md p-2 text-sm">
+                                <option value="" disabled selected hidden>-- Pilih Lt --</option>
+                                <option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">No. Unit</label>
+                            <input type="text" id="rusunBlokUnit" placeholder="Contoh: 10 / 05 / 3" class="w-full border border-gray-300 rounded-md p-2 text-sm">
+                            <span class="text-xs text-gray-500 mt-1 block">Otomatis gabung (Lt 3 & Unit 10 -&gt; UNIT 310)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- KOTAK 2: RUSUN TOWER -->
+                <div id="boxRusunTower" class="space-y-4 hidden border-t pt-3">
+                    <div id="groupTowerKode" class="hidden">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Tower (1-5)</label>
+                        <select id="rusunTowerKodeSelect" class="w-full border border-gray-300 rounded-md p-2 text-sm">
+                            <option value="" disabled selected hidden>-- Pilih Tower --</option>
+                        </select>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Lantai</label>
+                            <input type="text" id="rusunTowerLantai" placeholder="No Lantai..." class="w-full border border-gray-300 rounded-md p-2 text-sm">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">No. Unit</label>
+                            <input type="text" id="rusunTowerUnit" placeholder="No Unit..." class="w-full border border-gray-300 rounded-md p-2 text-sm">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- KOTAK 3: PERUMAHAN -->
+                <div id="boxPerumahan" class="space-y-4 hidden border-t pt-3">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Nama Perumahan</label>
+                        <select id="perumahanNamaSelect" class="w-full border border-gray-300 rounded-md p-2 text-sm">
+                            <option value="" disabled selected hidden>-- Pilih Perumahan --</option>
+                            <option value="Parama">Parama</option>
+                            <option value="Waringin Kurung">Waringin Kurung</option>
+                            <option value="Tambun">Casanova</option>
+							<option value="Tambun">Tambun</option>
+                            <option value="CUSTOM">Lainnya (Custom)</option>
+                        </select>
+                        <input type="text" id="perumahanCustom" placeholder="Nama Perumahan Lainnya..." class="w-full mt-2 border border-gray-300 rounded-md p-2 text-sm uppercase hidden">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Detail Blok / Nomor</label>
+                        <input type="text" id="perumahanDetail" placeholder="Contoh: Blok B2 No. 12" class="w-full border border-gray-300 rounded-md p-2 text-sm">
+                    </div>
+                </div>
+
+                <!-- KOTAK 4: CUSTOM / LAINNYA -->
+                <div id="boxCustom" class="space-y-4 hidden border-t pt-3">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Alamat Lengkap Custom</label>
+                        <textarea id="alamatCustom" rows="2" placeholder="Tuliskan alamat lengkap lokasi..." class="w-full border border-gray-300 rounded-md p-2 text-sm"></textarea>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Waktu & Aktivitas -->
+            <div class="bg-gray-50 p-4 rounded-md border border-gray-200 space-y-4">
+                <h2 class="text-md font-semibold text-gray-700">Waktu & Aktivitas</h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Clock In</label>
+                        <input type="time" id="clockIn" class="w-full border border-gray-300 rounded-md p-2 text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Clock Out</label>
+                        <input type="time" id="clockOut" class="w-full border border-gray-300 rounded-md p-2 text-sm">
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Activity (Otomatis)</label>
+                        <input type="text" id="activity" readonly class="w-full border border-gray-300 bg-gray-100 rounded-md p-2 text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Status Activity</label>
+                        <select id="statusActivity" class="w-full border border-gray-300 rounded-md p-2 text-sm">
+                            <option value="FINISH" selected>FINISH</option>
+                            <option value="PENDING">PENDING</option>
+                            <option value="CUSTOM">Lainnya (Custom)</option>
+                        </select>
+                        <input type="text" id="statusCustom" placeholder="Status Custom..." class="w-full mt-2 border border-gray-300 rounded-md p-2 text-sm hidden uppercase">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bagian Khusus Maintenance -->
+            <div id="boxJenisMaintenance" class="bg-gray-50 p-4 rounded-md border border-gray-200 space-y-4 hidden">
+                <h2 class="text-md font-semibold text-gray-700">Detail Maintenance</h2>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Jenis Kendala</label>
+                    <select id="jenisKendala" class="w-full border border-gray-300 rounded-md p-2 text-sm">
+                        <option value="NORMAL" selected>Normal / Perbaikan Berkala</option>
+                        <option value="TUKAR_MODEM">Tukar Modem / ONT</option>
+                        <option value="KABEL_PUTUS">Kabel Dropcore Putus</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Problem</label>
+                    <input type="text" id="problemText" placeholder="Contoh: Redaman tinggi / LOS" class="w-full border border-gray-300 rounded-md p-2 text-sm">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Action</label>
+                    <input type="text" id="actionText" placeholder="Contoh: Splicing ulang / Ganti patchcord" class="w-full border border-gray-300 rounded-md p-2 text-sm">
+                </div>
+            </div>
+
+            <!-- Data Teknis -->
+            <div class="bg-gray-50 p-4 rounded-md border border-gray-200 space-y-4">
+                <h2 class="text-md font-semibold text-gray-700">Data Teknis</h2>
+                
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Power (dBm)</label>
+                        <input type="number" step="0.1" id="power" placeholder="Contoh: 21.5" class="w-full border border-gray-300 rounded-md p-2 text-sm">
+                    </div>
+                    <div id="groupInterfaceOnu">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Interface ONU</label>
+                        <input type="text" id="interfaceOnu" placeholder="Contoh: 0/1/1" class="w-full border border-gray-300 rounded-md p-2 text-sm">
+                    </div>
+                    <div id="groupOdpPort">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">ODP Port</label>
+                        <input type="text" id="odpPort" placeholder="Contoh: ODP-XX-01/12" class="w-full border border-gray-300 rounded-md p-2 text-sm">
+                    </div>
+                </div>
+
+                <!-- Kondisi Normal SN -->
+                <div id="groupSnOnu">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Serial Number (SN)</label>
+                    <input type="text" id="snOnu" placeholder="Masukkan SN ONU..." class="w-full border border-gray-300 rounded-md p-2 text-sm">
+                </div>
+
+                <!-- Kondisi Tukar Modem SN -->
+                <div id="groupSnTukarModem" class="grid grid-cols-1 sm:grid-cols-2 gap-4 hidden">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">SN ONT Lama</label>
+                        <input type="text" id="snOntLama" placeholder="SN Perangkat Lama..." class="w-full border border-gray-300 rounded-md p-2 text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">SN ONT Baru</label>
+                        <input type="text" id="snOntBaru" placeholder="SN Perangkat Baru..." class="w-full border border-gray-300 rounded-md p-2 text-sm">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Catatan Tambahan (Opsional)</label>
+                    <input type="text" id="catatan" placeholder="Catatan tambahan..." class="w-full border border-gray-300 rounded-md p-2 text-sm">
+                </div>
+            </div>
+
+        </form>
+
+        <!-- PREVIEW SECTION -->
+        <div class="mt-8 pt-6 border-t border-gray-300">
+            <h2 class="text-md font-semibold text-gray-700 mb-2">PREVIEW LAPORAN WA</h2>
+            <textarea id="previewText" rows="14" readonly class="w-full bg-gray-50 border border-gray-300 rounded-md p-3 text-sm font-mono whitespace-pre-wrap"></textarea>
+            
+            <div class="flex gap-4 mt-4">
+                <button type="button" onclick="resetForm()" class="flex-1 bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-md transition duration-200">RESET</button>
+                <button type="button" onclick="copyText()" class="flex-1 bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-md transition duration-200">COPY</button>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Script JS Terpisah -->
+    <script src="script.js"></script>
+</body>
+</html>
