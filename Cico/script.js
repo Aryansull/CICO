@@ -8,6 +8,25 @@ function setTanggalHariIni() {
 
 setTanggalHariIni();
 
+// Mengisi dropdown unit dari 01 sampai 23 untuk Rusun Blok, Rusun Tower, & Perumahan
+function populateUnitDropdowns() {
+    const unitSelects = ['rusunBlokUnit', 'rusunTowerUnit', 'perumahanUnitSelect'];
+    unitSelects.forEach(id => {
+        const selectEl = document.getElementById(id);
+        if (selectEl && selectEl.options.length <= 1) {
+            selectEl.innerHTML = '<option value="" disabled selected hidden>-- Pilih Unit --</option>';
+            for (let i = 1; i <= 23; i++) {
+                const valStr = i < 10 ? '0' + i : String(i);
+                const el = document.createElement('option');
+                el.value = valStr;
+                el.textContent = valStr;
+                selectEl.appendChild(el);
+            }
+        }
+    });
+}
+populateUnitDropdowns();
+
 const allInputs = document.querySelectorAll('input, select');
 allInputs.forEach(item => item.addEventListener('input', updateViewAndPreview));
 document.getElementById('project').addEventListener('change', updateViewAndPreview);
@@ -15,6 +34,9 @@ document.getElementById('katLokasi').addEventListener('change', updateViewAndPre
 document.getElementById('rusunBlokNama').addEventListener('change', updateBlokDropdown);
 document.getElementById('rusunTowerNama').addEventListener('change', updateViewAndPreview);
 document.getElementById('perumahanNamaSelect').addEventListener('change', updateViewAndPreview);
+document.getElementById('jenisLaporan').addEventListener('change', updateViewAndPreview);
+document.getElementById('jenisKendala').addEventListener('change', updateViewAndPreview);
+document.getElementById('statusActivity').addEventListener('change', updateViewAndPreview);
 
 function updateBlokDropdown() {
     const rusunNama = document.getElementById('rusunBlokNama').value;
@@ -30,7 +52,7 @@ function updateBlokDropdown() {
     } else if (rusunNama === 'Rusun KM2') {
         options = ['A', 'B'];
     } else if (rusunNama === 'Rusun Tipar Cakung') {
-        options = ['Akasia', 'Angsana', 'Mahoni', 'Cendana', 'Meranti', 'Puspa indah', 'Jatisari', 'Rasamala', 'Kamperwangi', 'Kriung'];
+        options = ['Akasia', 'Angsana', 'Mahoni', 'Cendana', 'Meranti', 'Puspa indah', 'Jatisari', 'Rasamala', 'Kamperwangi', 'Kruing'];
     }
 
     options.forEach(opt => {
@@ -50,12 +72,10 @@ function updateViewAndPreview() {
     const currentKatVal = katLokSelect.value;
     const currentTowerVal = rusunTowerNamaSelect.value;
 
-    // KONTROL UTAMA: Jika ISP BELUM DIPILIH, kosongkan/kunci pilihan lokasi
     if (!projVal) {
         katLokSelect.innerHTML = '<option value="" disabled selected hidden>-- Pilih ISP Terlebih Dahulu --</option>';
         rusunTowerNamaSelect.innerHTML = '<option value="" disabled selected hidden>-- Pilih Kategori Lokasi Dulu --</option>';
     } else {
-        // Jika JAKINET dipilih
         if (projVal === 'FTTH ISP JAKINET') {
             katLokSelect.innerHTML = `
                 <option value="" disabled selected hidden>-- Pilih Kategori Lokasi --</option>
@@ -68,7 +88,6 @@ function updateViewAndPreview() {
                 <option value="Rusun Pulogebang Tower">Rusun Pulogebang Tower</option>
             `;
         } 
-        // Jika JELANTIK dipilih
         else if (projVal === 'FTTH ISP JELANTIK') {
             katLokSelect.innerHTML = `
                 <option value="" disabled selected hidden>-- Pilih Kategori Lokasi --</option>
@@ -81,7 +100,6 @@ function updateViewAndPreview() {
                 <option value="Rusun Nagrak">Rusun Nagrak</option>
             `;
         } 
-        // Jika CUSTOM / Lainnya
         else {
             katLokSelect.innerHTML = `
                 <option value="" disabled selected hidden>-- Pilih Kategori Lokasi --</option>
@@ -107,12 +125,11 @@ function updateViewAndPreview() {
 
     const katLok = katLokSelect.value;
 
-    // KONTROL TAMPILAN DROPDOWN NAMA RUSUN TOWER: Hanya muncul jika Kategori Lokasi dipilih RUSUN_TOWER dan ISP sudah dipilih
     if (projVal && katLok === 'RUSUN_TOWER') {
         groupRusunTowerNama.classList.remove('hidden');
     } else {
         groupRusunTowerNama.classList.add('hidden');
-        rusunTowerNamaSelect.value = ''; // Reset pilihan rusun tower jika kategori berubah
+        rusunTowerNamaSelect.value = '';
     }
 
     const rusunTowerNama = rusunTowerNamaSelect.value;
@@ -142,7 +159,7 @@ function updateViewAndPreview() {
 
     const activityInput = document.getElementById('activity');
     if (isJenisCustom) {
-        const customAct = document.getElementById('jenisLaporanCustom').value.trim();
+        const customAct = document.getElementById('jenisLaporanCustomInput').value.trim();
         activityInput.value = customAct.toUpperCase();
     } else if (jenisLapVal) {
         activityInput.value = jenisLapVal.replace('KEGIATAN ', '');
@@ -161,7 +178,6 @@ function updateViewAndPreview() {
     const perumahanSelectVal = document.getElementById('perumahanNamaSelect').value;
     document.getElementById('perumahanCustom').classList.toggle('hidden', perumahanSelectVal !== 'CUSTOM');
 
-    // Kontrol Kotak Form Berdasarkan Kategori Lokasi
     document.getElementById('boxRusunBlok').classList.toggle('hidden', katLok !== 'RUSUN_BLOK');
     document.getElementById('boxRusunTower').classList.toggle('hidden', katLok !== 'RUSUN_TOWER');
     document.getElementById('boxPerumahan').classList.toggle('hidden', katLok !== 'PERUMAHAN');
@@ -210,7 +226,7 @@ function formatHariTanggal(dateString) {
 function getSelectedJenisLaporan() {
     const val = document.getElementById('jenisLaporan').value;
     if (val === 'LAINNYA') {
-        const customText = document.getElementById('jenisLaporanCustom').value.trim().toUpperCase();
+        const customText = document.getElementById('jenisLaporanCustomInput').value.trim().toUpperCase();
         return customText ? `KEGIATAN ${customText}` : 'KEGIATAN ...';
     }
     return val;
@@ -250,23 +266,15 @@ function getSelectedPIC() {
     return picArr.length > 0 ? picArr.join('-') : '';
 }
 
-function formatUnitNumber(unitStr) {
-    if (!unitStr) return '';
-    let num = parseInt(unitStr, 10);
-    if (isNaN(num)) return unitStr;
-    return num < 10 ? '0' + num : num.toString();
-}
-
 function getFormattedLokasi() {
     const kat = document.getElementById('katLokasi').value;
     if (kat === 'RUSUN_BLOK') {
         const nama = document.getElementById('rusunBlokNama').value;
         const kode = document.getElementById('rusunBlokKodeSelect').value || '';
         const lt = document.getElementById('rusunBlokLantai').value || '';
-        const unitRaw = document.getElementById('rusunBlokUnit').value;
-        const unitFormatted = formatUnitNumber(unitRaw);
+        const unit = document.getElementById('rusunBlokUnit').value || '';
         
-        const combinedUnit = (lt || unitFormatted) ? `UNIT ${lt}${unitFormatted}` : '';
+        const combinedUnit = (lt || unit) ? `UNIT ${lt}${unit}` : '';
         return `${nama.toUpperCase()} BLOK ${kode.toUpperCase()} ${combinedUnit}`.trim();
 
     } else if (kat === 'RUSUN_TOWER') {
@@ -277,10 +285,9 @@ function getFormattedLokasi() {
         }
 
         const lt = document.getElementById('rusunTowerLantai').value || '';
-        const unitRaw = document.getElementById('rusunTowerUnit').value;
-        const unitFormatted = formatUnitNumber(unitRaw);
+        const unit = document.getElementById('rusunTowerUnit').value || '';
         
-        const combinedUnit = (lt || unitFormatted) ? `UNIT ${lt}${unitFormatted}` : '';
+        const combinedUnit = (lt || unit) ? `UNIT ${lt}${unit}` : '';
         
         if (nama === 'Rusun Pulogebang Tower') {
             return `${nama.toUpperCase()} ${combinedUnit}`.trim();
@@ -294,8 +301,10 @@ function getFormattedLokasi() {
         if (namaPerumahan === 'CUSTOM') {
             namaPerumahan = document.getElementById('perumahanCustom').value.trim().toUpperCase();
         }
-        const detail = document.getElementById('perumahanDetail').value;
-        return `PERUMAHAN ${namaPerumahan.toUpperCase()} ${detail.toUpperCase()}`.trim();
+        const blok = document.getElementById('perumahanBlok').value.trim();
+        const unit = document.getElementById('perumahanUnitSelect').value;
+        const detailUnit = unit ? `NO. ${unit}` : '';
+        return `PERUMAHAN ${namaPerumahan.toUpperCase()} ${blok.toUpperCase()} ${detailUnit}`.trim();
     } else if (kat === 'CUSTOM') {
         return document.getElementById('alamatCustom').value.toUpperCase();
     }
@@ -337,8 +346,11 @@ function generatePreview() {
     const isTukarModem = (jenisLapVal === 'KEGIATAN MAINTENANCE' && jenisKendala === 'TUKAR_MODEM');
     const isKabelPutus = (jenisLapVal === 'KEGIATAN MAINTENANCE' && jenisKendala === 'KABEL_PUTUS');
 
+    // Garis pemisah disesuaikan agar pas di kotak WhatsApp
+    const divider = `────────────────────────`;
+
     let textOut = `*⚡ CHECK IN & CHECK OUT ⚡*\n`;
-    textOut += `──────────────────────────────\n`;
+    textOut += `${divider}\n`;
     textOut += `📅 *${hariTgl}*\n\n`;
     textOut += `*JENIS LAPORAN : ${jenisLap}*\n`;
     textOut += `${padLabel('Project')} : ${project}\n`;
@@ -369,9 +381,9 @@ function generatePreview() {
 
     if (catatan) textOut += `\n${padLabel('CATATAN')} : ${catatan}\n`;
 
-    textOut += `\n──────────────────────────────\n`;
+    textOut += `\n${divider}\n`;
     textOut += `👥 Cc: @\n\n`;
-    textOut += `*💼 The work has been completed safely. Thank you*`;
+    textOut += `*👷‍♂️ The work has been completed safely. Thank you*`;
 
     document.getElementById('previewText').value = textOut;
 }
