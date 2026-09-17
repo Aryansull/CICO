@@ -3,12 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Templatting CiCo FTTH</title>
+    <title>Template CiCo</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        .hidden { display: none !important; }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body class="bg-gray-100 text-gray-800 font-sans antialiased p-4 sm:p-6">
 
@@ -32,9 +30,8 @@
                     </select>
                 </div>
 
-                <!-- Input Custom Jenis Laporan -->
                 <div id="jenisLaporanCustom" class="hidden">
-                    <input type="text" placeholder="Masukkan Jenis Kegiatan Lainnya..." class="w-full border border-gray-300 rounded-md p-2 text-sm uppercase">
+                    <input type="text" id="jenisLaporanCustomInput" placeholder="Masukkan Jenis Kegiatan Lainnya..." class="w-full border border-gray-300 rounded-md p-2 text-sm uppercase">
                 </div>
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -93,7 +90,6 @@
                     </select>
                 </div>
 
-                <!-- Pilihan Rusun Tower (Hanya muncul jika Kategori = RUSUN_TOWER) -->
                 <div id="groupRusunTowerNama" class="hidden">
                     <label class="block text-sm font-medium text-gray-700 mb-1">Pilih Rusun Tower</label>
                     <select id="rusunTowerNama" class="w-full border border-gray-300 rounded-md p-2 text-sm">
@@ -131,9 +127,11 @@
                             </select>
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">No. Unit</label>
-                            <input type="text" id="rusunBlokUnit" placeholder="Contoh: 10 / 05 / 3" class="w-full border border-gray-300 rounded-md p-2 text-sm">
-                            <span class="text-xs text-gray-500 mt-1 block">Otomatis gabung (Lt 3 & Unit 10 -&gt; UNIT 310)</span>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">No. Unit (01 - 23)</label>
+                            <select id="rusunBlokUnit" class="w-full border border-gray-300 rounded-md p-2 text-sm">
+                                <option value="" disabled selected hidden>-- Pilih Unit --</option>
+                            </select>
+                            <span class="text-xs text-gray-500 mt-1 block">Otomatis gabung ( Lt 3 & Unit 09 -> UNIT 309 )</span>
                         </div>
                     </div>
                 </div>
@@ -152,8 +150,10 @@
                             <input type="text" id="rusunTowerLantai" placeholder="No Lantai..." class="w-full border border-gray-300 rounded-md p-2 text-sm">
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">No. Unit</label>
-                            <input type="text" id="rusunTowerUnit" placeholder="No Unit..." class="w-full border border-gray-300 rounded-md p-2 text-sm">
+                            <label class="block text-sm font-medium text-gray-700 mb-1">No. Unit (01 - 23)</label>
+                            <select id="rusunTowerUnit" class="w-full border border-gray-300 rounded-md p-2 text-sm">
+                                <option value="" disabled selected hidden>-- Pilih Unit --</option>
+                            </select>
                         </div>
                     </div>
                 </div>
@@ -166,26 +166,29 @@
                             <option value="" disabled selected hidden>-- Pilih Perumahan --</option>
                             <option value="Parama">Parama</option>
                             <option value="Waringin Kurung">Waringin Kurung</option>
-                            <option value="Tambun">Casanova</option>
-							<option value="Tambun">Tambun</option>
+                            <option value="Tambun">Tambun</option>
                             <option value="CUSTOM">Lainnya (Custom)</option>
                         </select>
                         <input type="text" id="perumahanCustom" placeholder="Nama Perumahan Lainnya..." class="w-full mt-2 border border-gray-300 rounded-md p-2 text-sm uppercase hidden">
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Detail Blok / Nomor</label>
-                        <input type="text" id="perumahanDetail" placeholder="Contoh: Blok B2 No. 12" class="w-full border border-gray-300 rounded-md p-2 text-sm">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Detail Blok / Nomor (01 - 23)</label>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                            <input type="text" id="perumahanBlok" placeholder="Contoh: Blok B2" class="w-full border border-gray-300 rounded-md p-2 text-sm">
+                            <select id="perumahanUnitSelect" class="w-full border border-gray-300 rounded-md p-2 text-sm">
+                                <option value="" disabled selected hidden>-- Pilih No Unit --</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
 
-                <!-- KOTAK 4: CUSTOM / LAINNYA -->
+                <!-- KOTAK 4: CUSTOM -->
                 <div id="boxCustom" class="space-y-4 hidden border-t pt-3">
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">Alamat Lengkap Custom</label>
                         <textarea id="alamatCustom" rows="2" placeholder="Tuliskan alamat lengkap lokasi..." class="w-full border border-gray-300 rounded-md p-2 text-sm"></textarea>
                     </div>
                 </div>
-
             </div>
 
             <!-- Waktu & Aktivitas -->
@@ -258,13 +261,11 @@
                     </div>
                 </div>
 
-                <!-- Kondisi Normal SN -->
                 <div id="groupSnOnu">
                     <label class="block text-sm font-medium text-gray-700 mb-1">Serial Number (SN)</label>
                     <input type="text" id="snOnu" placeholder="Masukkan SN ONU..." class="w-full border border-gray-300 rounded-md p-2 text-sm">
                 </div>
 
-                <!-- Kondisi Tukar Modem SN -->
                 <div id="groupSnTukarModem" class="grid grid-cols-1 sm:grid-cols-2 gap-4 hidden">
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">SN ONT Lama</label>
@@ -297,7 +298,7 @@
 
     </div>
 
-    <!-- Script JS Terpisah -->
+    <!-- Hubungkan File JavaScript -->
     <script src="script.js"></script>
 </body>
 </html>
